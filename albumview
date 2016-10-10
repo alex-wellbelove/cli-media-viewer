@@ -1,0 +1,2 @@
+curl -s $1 | grep  -P "(?<=href=\"//)i.imgur.com.{12}" --color -o | sed "s/^/http:\/\//" | tr '\n' ' '
+

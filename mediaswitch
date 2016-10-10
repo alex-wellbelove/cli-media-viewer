@@ -1,0 +1,20 @@
+#!/bin/sh
+# If $1 contains youtube, mpv it, if imgur gallery, extract filenames and 
+# view in feh. If gfycat, extract filenames with sed and view in mpv.
+
+if [[ $1 =~ "youtu" ]]; then
+    mpv --hwdec=vaapi --vo=opengl --ytdl-format="bestvideo[height<=?640]+bestaudio/best" "$1"
+elif [[ $1 =~ "gifv" ]]; then
+    urxvt -e mpv "$1"
+elif [[ $1 =~ "imgur.com/a/" ]]; then
+    urxvt -e feh `albumview $1` -Z -F --draw-filename
+elif [[ $1 =~ "imgur.com/gallery/" ]]; then
+    urxvt -e feh `albumview $1` -Z -F --draw-filename
+elif [[ $1 =~ "imgur" ]]; then
+    urxvt -e feh -. `fehparser $1`
+elif [[ $1 =~ "gfycat" ]]; then
+    urxvt -e mpv `echo $1 |sed -e 's/gfycat/zippy.gfycat/g'`.webm
+else 
+	urxvt -e elinks "$1"
+fi
+
